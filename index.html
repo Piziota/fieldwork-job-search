@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f4ef">
+    <meta name="description" content="A local-first job search workspace with country and language preferences and editable application drafts.">
+    <title>Fieldwork — Job Search Portal</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="#" aria-label="Fieldwork home">
+          <span class="brand-mark" aria-hidden="true">F</span>
+          <span>fieldwork<span class="brand-period">.</span></span>
+        </a>
+        <p class="side-label">YOUR WORKSPACE</p>
+        <a class="side-link active" href="#opportunities"><span aria-hidden="true">◫</span> Opportunities</a>
+        <a class="side-link" href="#preferences"><span aria-hidden="true">◎</span> Search profile</a>
+        <div class="sidebar-bottom">
+          <div class="privacy-indicator"><span class="status-dot"></span><span>Private on this device</span></div>
+          <p>Made for a thoughtful search.</p>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <span class="crumb">WORKSPACE <span>/</span> MY SEARCH</span>
+          <span class="local-pill"><span class="status-dot"></span> LOCAL-FIRST</span>
+        </header>
+
+        <section class="page-heading" id="opportunities">
+          <div>
+            <p class="eyebrow">A BETTER WAY TO FIND YOUR NEXT ROLE</p>
+            <h1>Your search,<br><span>on your terms.</span></h1>
+            <p class="intro">Tell us where you want to work and what matters. Keep the final call — and every application — yours.</p>
+          </div>
+          <button class="button button-dark" id="add-job-button" type="button"><span aria-hidden="true">＋</span> Add a job</button>
+        </section>
+
+        <div class="privacy-note" role="note">
+          <span aria-hidden="true">◈</span>
+          <p><strong>Your information stays here.</strong> Search preferences and drafts are saved in this browser only. Nothing is uploaded or submitted.</p>
+        </div>
+
+        <section class="stats-grid" aria-label="Search overview">
+          <article class="stat-card">
+            <div class="stat-icon mint" aria-hidden="true">↗</div>
+            <p class="stat-label">IN YOUR PIPELINE</p>
+            <p class="stat-value" id="stat-total">0</p>
+            <p class="stat-foot">roles you're considering</p>
+          </article>
+          <article class="stat-card">
+            <div class="stat-icon lilac" aria-hidden="true">✳</div>
+            <p class="stat-label">STRONG MATCHES</p>
+            <p class="stat-value" id="stat-matches">0</p>
+            <p class="stat-foot">score of 70 or higher</p>
+          </article>
+          <article class="stat-card">
+            <div class="stat-icon peach" aria-hidden="true">✓</div>
+            <p class="stat-label">APPLICATIONS STARTED</p>
+            <p class="stat-value" id="stat-applied">0</p>
+            <p class="stat-foot">applied or interviewing</p>
+          </article>
+        </section>
+
+        <section class="profile-section" id="preferences">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">START WITH WHAT MATTERS TO YOU</p>
+              <h2>Your search profile</h2>
+            </div>
+            <span class="draft-tag">EDIT ANYTIME</span>
+          </div>
+          <form id="profile-form" class="profile-grid">
+            <label class="field">
+              <span>What role are you looking for?</span>
+              <input name="role" type="text" placeholder="e.g. Product Designer, Data Analyst">
+            </label>
+            <label class="field">
+              <span>Application language</span>
+              <select name="language">
+                <option value="English">English</option>
+                <option value="Dutch">Dutch</option>
+                <option value="German">German</option>
+                <option value="French">French</option>
+                <option value="Spanish">Spanish</option>
+                <option value="Portuguese">Portuguese</option>
+                <option value="Danish">Danish</option>
+                <option value="Swedish">Swedish</option>
+                <option value="Norwegian">Norwegian</option>
+                <option value="Finnish">Finnish</option>
+                <option value="Polish">Polish</option>
+                <option value="Italian">Italian</option>
+                <option value="Hindi">Hindi</option>
+                <option value="Japanese">Japanese</option>
+                <option value="Korean">Korean</option>
+                <option value="Arabic">Arabic</option>
+                <option value="Other">Other / decide per role</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Countries you would consider <small>Choose one or more</small></span>
+              <select name="countries" multiple size="5" aria-describedby="countries-help">
+                <option>Australia</option>
+                <option>Austria</option>
+                <option>Belgium</option>
+                <option>Canada</option>
+                <option>Denmark</option>
+                <option>Finland</option>
+                <option>France</option>
+                <option>Germany</option>
+                <option>India</option>
+                <option>Ireland</option>
+                <option>Italy</option>
+                <option>Japan</option>
+                <option>Netherlands</option>
+                <option>New Zealand</option>
+                <option>Norway</option>
+                <option>Poland</option>
+                <option>Portugal</option>
+                <option>Singapore</option>
+                <option>South Korea</option>
+                <option>Spain</option>
+                <option>Sweden</option>
+                <option>Switzerland</option>
+                <option>United Arab Emirates</option>
+                <option>United Kingdom</option>
+                <option>United States</option>
+                <option>Remote / anywhere</option>
+              </select>
+              <small id="countries-help" class="field-help">On a Mac, hold Command to choose several.</small>
+            </label>
+            <label class="field">
+              <span>What should a job have? <small>Comma-separated</small></span>
+              <input name="mustHave" type="text" placeholder="e.g. remote, visa sponsorship, Python">
+            </label>
+            <label class="field">
+              <span>What would rule it out? <small>Comma-separated</small></span>
+              <input name="avoid" type="text" placeholder="e.g. unpaid, on-site, night shifts">
+            </label>
+            <label class="field field-wide">
+              <span>Your experience and evidence <small>Facts to use in application drafts</small></span>
+              <textarea name="evidence" rows="3" placeholder="Add your actual skills, achievements, and experience. Drafts will only use what you write here."></textarea>
+            </label>
+            <div class="profile-actions field-wide">
+              <span id="profile-saved" class="save-state" aria-live="polite">Not saved yet</span>
+              <button class="button button-outline" type="submit">Save my preferences <span aria-hidden="true">↗</span></button>
+            </div>
+          </form>
+        </section>
+
+        <section class="jobs-section">
+          <div class="section-heading jobs-heading">
+            <div>
+              <p class="eyebrow">THE SHORTLIST</p>
+              <h2>Opportunities</h2>
+            </div>
+            <label class="filter-label">SHOW
+              <select id="status-filter" aria-label="Filter opportunities by status">
+                <option value="all">All roles</option>
+                <option value="Saved">Saved</option>
+                <option value="Applied">Applied</option>
+                <option value="Interviewing">Interviewing</option>
+              </select>
+            </label>
+          </div>
+          <div id="jobs-list" class="jobs-list" aria-live="polite"></div>
+        </section>
+
+        <footer class="footer">
+          <span>FIELDWORK <span class="brand-period">•</span> EARLY ACCESS</span>
+          <span>Every draft is yours to review, edit, or leave behind.</span>
+        </footer>
+      </main>
+    </div>
+
+    <dialog id="job-dialog" class="dialog">
+      <form id="job-form" method="dialog">
+        <div class="dialog-heading">
+          <div><p class="eyebrow">ADD TO YOUR SHORTLIST</p><h2>New opportunity</h2></div>
+          <button class="icon-button" type="button" data-close="job-dialog" aria-label="Close">×</button>
+        </div>
+        <div class="dialog-grid">
+          <label class="field"><span>Job title *</span><input name="title" required placeholder="e.g. Senior Product Designer"></label>
+          <label class="field"><span>Company *</span><input name="company" required placeholder="Company name"></label>
+          <label class="field"><span>Country / location</span><input name="country" placeholder="e.g. Netherlands / Remote"></label>
+          <label class="field"><span>Application language <small>If known</small></span><input name="language" placeholder="e.g. English"></label>
+          <label class="field field-wide"><span>Job posting URL</span><input name="url" type="url" placeholder="https://..."></label>
+          <label class="field field-wide"><span>Job description *</span><textarea name="description" rows="6" required placeholder="Paste the job description here. It stays in this browser."></textarea></label>
+        </div>
+        <div class="dialog-actions">
+          <button class="button button-quiet" type="button" data-close="job-dialog">Cancel</button>
+          <button class="button button-dark" type="submit">Add opportunity <span aria-hidden="true">↗</span></button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="application-dialog" class="dialog application-dialog">
+      <form id="application-form" method="dialog">
+        <div class="dialog-heading">
+          <div><p class="eyebrow">A FIRST DRAFT — YOURS TO EDIT</p><h2 id="application-title">Application pack</h2></div>
+          <button class="icon-button" type="button" data-close="application-dialog" aria-label="Close">×</button>
+        </div>
+        <p class="application-disclaimer">These are editable starting points, not AI-generated or verified claims. Drafts are currently in English; your language preference is saved but not yet used for translation. Check every detail and only use statements that are true for you.</p>
+        <input type="hidden" name="jobId">
+        <label class="field"><span>CV / profile summary</span><textarea name="cv" rows="5"></textarea></label>
+        <label class="field"><span>Cover letter</span><textarea name="coverLetter" rows="8"></textarea></label>
+        <label class="field"><span>Draft answer: “Why are you interested in this role?”</span><textarea name="answer" rows="5"></textarea></label>
+        <div class="dialog-actions">
+          <button class="button button-quiet" type="button" data-close="application-dialog">Close</button>
+          <button class="button button-outline" type="button" id="copy-application">Copy all drafts</button>
+          <button class="button button-dark" type="submit">Save application pack <span aria-hidden="true">↗</span></button>
+        </div>
+      </form>
+    </dialog>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
