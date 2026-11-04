@@ -18,10 +18,17 @@
         </a>
         <p class="side-label">YOUR WORKSPACE</p>
         <a class="side-link active" href="#dashboard"><span aria-hidden="true">▦</span> Dashboard</a>
+        <a class="side-link" href="#discovery"><span aria-hidden="true">⌕</span> Find jobs</a>
         <a class="side-link" href="#opportunities"><span aria-hidden="true">◫</span> Opportunities</a>
+        <a class="side-link" href="#applications"><span aria-hidden="true">↗</span> Applications</a>
         <a class="side-link" href="#preferences"><span aria-hidden="true">◎</span> Search profile</a>
         <p class="side-label side-label-secondary">YOUR SEARCH</p>
         <div class="sidebar-search-note"><span class="status-dot"></span><span id="sidebar-search-status">Profile not set up</span></div>
+        <nav class="side-secondary" aria-label="Career tools">
+          <a class="side-link" href="#interviews"><span aria-hidden="true">✳</span> Interview prep</a>
+          <a class="side-link" href="#skills"><span aria-hidden="true">↗</span> Skills plan</a>
+          <a class="side-link" href="#settings"><span aria-hidden="true">⚙</span> Settings</a>
+        </nav>
         <div class="sidebar-bottom">
           <div class="privacy-indicator"><span class="status-dot"></span><span>Private on this device</span></div>
           <p>Made for a thoughtful search.</p>
@@ -107,7 +114,7 @@
 
         <div class="privacy-note" role="note">
           <span aria-hidden="true">◈</span>
-          <p><strong>Your information stays here.</strong> Search preferences and drafts are saved in this browser only. Nothing is uploaded or submitted.</p>
+          <p><strong>Your information stays on this device.</strong> Preferences and drafts are saved in Fieldwork’s local database. No applications are submitted. Optional board, AI, research, or Notion connections contact external services only when you choose those actions.</p>
         </div>
 
         <section class="jobs-section" id="opportunities">
@@ -128,18 +135,84 @@
           <div id="jobs-list" class="jobs-list" aria-live="polite"></div>
         </section>
 
+        <section class="tools-section" id="discovery">
+          <div class="section-heading">
+            <div><p class="eyebrow">EXPLORE PUBLIC JOB BOARDS</p><h2>Job discovery</h2></div>
+            <button class="button button-outline" id="sync-sources" type="button">Refresh configured boards <span aria-hidden="true">↻</span></button>
+          </div>
+          <p class="section-intro">Connect a company’s public Greenhouse, Lever, Ashby, or SmartRecruiters board. Fieldwork checks those boards when you refresh; it does not crawl job sites or bypass access controls.</p>
+          <div class="discovery-grid">
+            <form id="source-form" class="panel source-form">
+              <p class="eyebrow">ADD A COMPANY BOARD</p>
+              <label class="field"><span>Job-board platform</span>
+                <select name="platform"><option value="greenhouse">Greenhouse</option><option value="lever">Lever</option><option value="ashby">Ashby</option><option value="smartrecruiters">SmartRecruiters</option></select>
+              </label>
+              <label class="field"><span>Board / company identifier</span><input name="slug" required maxlength="100" placeholder="e.g. openai"></label>
+              <label class="field"><span>Company name</span><input name="company" required maxlength="120" placeholder="e.g. OpenAI"></label>
+              <label class="field"><span>Countries <small>Optional source filter</small></span><input name="countries" placeholder="e.g. Germany, Netherlands"></label>
+              <button class="button button-outline" type="submit">Add job board <span aria-hidden="true">＋</span></button>
+            </form>
+            <div class="panel sources-panel">
+              <div class="panel-heading"><div><p class="eyebrow">YOUR SOURCES</p><h2>Connected boards</h2></div><span class="source-count" id="source-count">0 boards</span></div>
+              <div id="sources-list" class="sources-list"></div>
+            </div>
+          </div>
+          <p id="sync-result" class="inline-result" aria-live="polite"></p>
+        </section>
+
+        <section class="tools-section" id="applications">
+          <div class="section-heading">
+            <div><p class="eyebrow">YOUR MATERIALS, YOUR DECISION</p><h2>Application workspace</h2></div>
+            <a class="text-link" href="#opportunities">Browse opportunities <span aria-hidden="true">↗</span></a>
+          </div>
+          <p class="section-intro">Prepare editable CV summaries, cover letters, and question answers for a specific posting. Review and submit them yourself; Fieldwork never submits applications.</p>
+          <div id="applications-list" class="application-list"></div>
+          <div id="followup-result" aria-live="polite"></div>
+        </section>
+
+        <section class="tools-section" id="interviews">
+          <div class="section-heading"><div><p class="eyebrow">PRACTICE WITH YOUR OWN EVIDENCE</p><h2>Interview preparation</h2></div></div>
+          <p class="section-intro">Prepare role-specific questions and evidence prompts. Company information is not independently researched; verify current facts yourself.</p>
+          <div id="interview-list" class="interview-list"></div>
+          <div id="interview-result" aria-live="polite"></div>
+        </section>
+
+        <section class="tools-section" id="skills">
+          <div class="section-heading">
+            <div><p class="eyebrow">TURN GAPS INTO A PLAN</p><h2>Skills development</h2></div>
+            <div class="skills-actions">
+              <button class="button button-outline" id="run-skills-plan" type="button">Local comparison <span aria-hidden="true">↗</span></button>
+              <button class="button button-outline" id="run-ai-skills-plan" type="button">AI learning plan <span aria-hidden="true">✳</span></button>
+            </div>
+          </div>
+          <p class="section-intro">A local keyword comparison of your experience and saved postings—not a verified skills assessment. Use your judgment before committing time or money to a course.</p>
+          <div class="panel skills-results" id="skills-results"><p>Add opportunities and experience, then run a comparison to see recurring terms.</p></div>
+        </section>
+
         <section class="profile-section" id="preferences">
           <div class="section-heading">
             <div>
-              <p class="eyebrow">START WITH WHAT MATTERS TO YOU</p>
-              <h2>Shape your search</h2>
+              <p class="eyebrow">YOUR EXPERIENCE, GOALS, AND BOUNDARIES</p>
+              <h2>Search profile</h2>
             </div>
             <span class="draft-tag">EDIT ANYTIME</span>
           </div>
           <form id="profile-form" class="profile-grid">
             <label class="field">
+              <span>Your name</span>
+              <input name="name" type="text" autocomplete="name" placeholder="Name shown on application drafts">
+            </label>
+            <label class="field">
+              <span>Email</span>
+              <input name="email" type="email" autocomplete="email" placeholder="you@example.com">
+            </label>
+            <label class="field">
               <span>What role are you looking for?</span>
               <input name="role" type="text" placeholder="e.g. Product Designer, Data Analyst">
+            </label>
+            <label class="field">
+              <span>Seniority / experience level</span>
+              <input name="seniority" type="text" placeholder="e.g. mid-level, 5+ years, leadership">
             </label>
             <label class="field">
               <span>Application language</span>
@@ -160,40 +233,127 @@
                 <option value="Japanese">Japanese</option>
                 <option value="Korean">Korean</option>
                 <option value="Arabic">Arabic</option>
+                <option value="Czech">Czech</option>
+                <option value="Greek">Greek</option>
+                <option value="Hebrew">Hebrew</option>
+                <option value="Indonesian">Indonesian</option>
+                <option value="Mandarin Chinese">Mandarin Chinese</option>
+                <option value="Romanian">Romanian</option>
+                <option value="Russian">Russian</option>
+                <option value="Thai">Thai</option>
+                <option value="Turkish">Turkish</option>
+                <option value="Ukrainian">Ukrainian</option>
+                <option value="Urdu">Urdu</option>
+                <option value="Vietnamese">Vietnamese</option>
                 <option value="Other">Other / decide per role</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Other languages you can work in <small>Choose all that apply</small></span>
+              <select name="languages" multiple size="4">
+                <option>Arabic</option><option>Bulgarian</option><option>Czech</option><option>Danish</option>
+                <option>Dutch</option><option>English</option><option>Finnish</option><option>French</option>
+                <option>German</option><option>Greek</option><option>Hebrew</option><option>Hindi</option>
+                <option>Indonesian</option><option>Italian</option><option>Japanese</option><option>Korean</option>
+                <option>Malay</option><option>Mandarin Chinese</option><option>Norwegian</option><option>Polish</option>
+                <option>Portuguese</option><option>Romanian</option><option>Russian</option><option>Spanish</option>
+                <option>Swedish</option><option>Thai</option><option>Turkish</option><option>Ukrainian</option>
+                <option>Urdu</option><option>Vietnamese</option>
               </select>
             </label>
             <label class="field">
               <span>Countries you would consider <small>Choose one or more</small></span>
               <select name="countries" multiple size="5" aria-describedby="countries-help">
+                <option>Argentina</option>
                 <option>Australia</option>
                 <option>Austria</option>
+                <option>Bahrain</option>
                 <option>Belgium</option>
+                <option>Brazil</option>
+                <option>Bulgaria</option>
                 <option>Canada</option>
+                <option>Chile</option>
+                <option>China</option>
+                <option>Colombia</option>
+                <option>Costa Rica</option>
+                <option>Croatia</option>
+                <option>Cyprus</option>
+                <option>Czechia</option>
                 <option>Denmark</option>
+                <option>Egypt</option>
+                <option>Estonia</option>
                 <option>Finland</option>
                 <option>France</option>
                 <option>Germany</option>
+                <option>Ghana</option>
+                <option>Greece</option>
+                <option>Hong Kong</option>
+                <option>Hungary</option>
+                <option>Iceland</option>
                 <option>India</option>
+                <option>Indonesia</option>
                 <option>Ireland</option>
+                <option>Israel</option>
                 <option>Italy</option>
                 <option>Japan</option>
+                <option>Kenya</option>
+                <option>Latvia</option>
+                <option>Lithuania</option>
+                <option>Luxembourg</option>
+                <option>Malaysia</option>
+                <option>Mexico</option>
                 <option>Netherlands</option>
                 <option>New Zealand</option>
+                <option>Nigeria</option>
                 <option>Norway</option>
+                <option>Pakistan</option>
+                <option>Philippines</option>
                 <option>Poland</option>
                 <option>Portugal</option>
+                <option>Qatar</option>
+                <option>Romania</option>
+                <option>Saudi Arabia</option>
                 <option>Singapore</option>
+                <option>Slovakia</option>
+                <option>Slovenia</option>
+                <option>South Africa</option>
                 <option>South Korea</option>
                 <option>Spain</option>
                 <option>Sweden</option>
                 <option>Switzerland</option>
+                <option>Taiwan</option>
+                <option>Thailand</option>
+                <option>Turkey</option>
+                <option>Ukraine</option>
                 <option>United Arab Emirates</option>
                 <option>United Kingdom</option>
                 <option>United States</option>
+                <option>Vietnam</option>
                 <option>Remote / anywhere</option>
               </select>
               <small id="countries-help" class="field-help">On a Mac, hold Command to choose several.</small>
+            </label>
+            <label class="field">
+              <span>Work authorization / sponsorship needs</span>
+              <input name="workAuthorization" type="text" placeholder="e.g. authorized in Germany; sponsorship needed elsewhere">
+            </label>
+            <label class="field">
+              <span>Work arrangement</span>
+              <select name="remotePreference">
+                <option value="">Any arrangement</option><option>Remote</option><option>Hybrid</option><option>On-site</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Employment types <small>Comma-separated</small></span>
+              <input name="employmentTypes" type="text" placeholder="e.g. full-time, contract">
+            </label>
+            <label class="field">
+              <span>Salary expectations <small>Optional</small></span>
+              <div class="salary-fields"><input name="salaryMin" inputmode="decimal" placeholder="Minimum"><input name="salaryMax" inputmode="decimal" placeholder="Maximum"></div>
+            </label>
+            <label class="field">
+              <span>Industries of interest <small>Comma-separated</small></span>
+              <input name="industries" type="text" placeholder="e.g. climate, health, education">
             </label>
             <label class="field">
               <span>What should a job have? <small>Comma-separated</small></span>
@@ -203,15 +363,78 @@
               <span>What would rule it out? <small>Comma-separated</small></span>
               <input name="avoid" type="text" placeholder="e.g. unpaid, on-site, night shifts">
             </label>
+            <label class="field">
+              <span>Skills <small>Comma-separated</small></span>
+              <input name="skills" type="text" placeholder="e.g. Python, SQL, stakeholder management">
+            </label>
+            <label class="field">
+              <span>Portfolio, LinkedIn, GitHub <small>Links or handles</small></span>
+              <input name="links" type="text" placeholder="LinkedIn, portfolio, GitHub">
+            </label>
             <label class="field field-wide">
-              <span>Your experience and evidence <small>Facts to use in application drafts</small></span>
-              <textarea name="evidence" rows="3" placeholder="Add your actual skills, achievements, and experience. Drafts will only use what you write here."></textarea>
+              <span>Import your CV / career documents <small>Text, Markdown, DOCX, or PDF. Extracted text stays on this device.</small></span>
+              <input id="profile-document" type="file" accept=".txt,.md,.docx,.pdf">
+              <small id="document-status" class="field-help" aria-live="polite"></small>
+            </label>
+            <label class="field field-wide">
+              <span>Professional experience and achievements <small>Dates, responsibilities, outcomes, and evidence for accurate drafts</small></span>
+              <textarea name="experience" rows="5" placeholder="Add roles, dates, responsibilities, and achievements. Include only accurate facts; drafts must not invent details."></textarea>
+            </label>
+            <label class="field field-wide">
+              <span>Education, certifications, and additional evidence</span>
+              <textarea name="education" rows="3" placeholder="Degrees, training, certificates, and other relevant evidence."></textarea>
+            </label>
+            <label class="field field-wide">
+              <span>Additional career evidence</span>
+              <textarea name="evidence" rows="3" placeholder="Projects, metrics, publications, awards, or other evidence you want applications to draw from."></textarea>
             </label>
             <div class="profile-actions field-wide">
               <span id="profile-saved" class="save-state" aria-live="polite">Not saved yet</span>
               <button class="button button-outline" type="submit">Save my preferences <span aria-hidden="true">↗</span></button>
             </div>
           </form>
+        </section>
+
+        <section class="tools-section" id="settings">
+          <div class="section-heading"><div><p class="eyebrow">YOUR DATA AND OPTIONAL AI</p><h2>Settings &amp; integrations</h2></div></div>
+          <div class="settings-grid">
+            <article class="panel">
+              <p class="eyebrow">AI PROVIDER</p>
+              <h3 id="ai-status-title">Checking local configuration…</h3>
+              <p class="panel-subtitle" id="ai-status-text">AI is optional. Application templates and local matching work without a provider key.</p>
+              <p class="settings-help">To enable AI, configure a provider and API key in the local server environment. Keys stay on the server and are never sent to your browser. AI drafts require your review.</p>
+            </article>
+            <article class="panel">
+              <p class="eyebrow">PORTABLE BY DESIGN</p>
+              <h3>Back up or move your search</h3>
+              <p class="panel-subtitle">Export your profile, jobs, and application drafts to a local JSON backup or CSV tracker.</p>
+              <div class="settings-actions">
+                <a class="button button-outline" href="/api/export.json" download="fieldwork-backup.json">Download backup</a>
+                <a class="button button-outline" href="/api/export.csv" download="fieldwork-applications.csv">Download CSV</a>
+                <label class="button button-quiet import-label">Import backup<input id="backup-file" type="file" accept="application/json,.json"></label>
+              </div>
+            </article>
+            <article class="panel">
+              <p class="eyebrow">EMAIL STATUS REVIEW</p>
+              <h3>Import a Gmail Takeout export</h3>
+              <p class="panel-subtitle">Import an MBOX export to propose application status changes. Fieldwork only displays suggestions; nothing changes until you approve it. Email content is processed locally and not retained.</p>
+              <label class="button button-outline file-button">Choose MBOX / EML<input id="email-export-file" type="file" accept=".mbox,.eml"></label>
+              <p class="settings-help">Export a mailbox from Gmail Takeout; this is a local file import, not a live Gmail connection.</p>
+              <div id="email-proposals" class="email-proposals"></div>
+            </article>
+            <article class="panel">
+              <p class="eyebrow">OPTIONAL NOTION VIEW</p>
+              <h3 id="notion-status-title">Notion sync is not configured</h3>
+              <p class="panel-subtitle" id="notion-status-text">A one-way read-only job tracker can be synced to a Notion database. Profile details and application documents are never sent.</p>
+              <button class="button button-outline" id="sync-notion" type="button">Sync jobs to Notion <span aria-hidden="true">↗</span></button>
+            </article>
+            <article class="panel">
+              <p class="eyebrow">COMPANY RESEARCH</p>
+              <h3 id="research-status-title">Search is optional</h3>
+              <p class="panel-subtitle" id="research-status-text">Enable a web-search provider on the local server for source-linked company research. Search results are leads to verify, not established facts.</p>
+            </article>
+          </div>
+          <p class="privacy-note settings-privacy"><span aria-hidden="true">◈</span><span><strong>Local-first, with explicit connections.</strong> Profile, documents, and application materials are stored in the local SQLite database. Only a deliberate board refresh contacts configured job-board APIs. AI requests go to the provider you configure.</span></p>
         </section>
 
         <footer class="footer">
@@ -230,10 +453,13 @@
         <div class="dialog-grid">
           <label class="field"><span>Job title *</span><input name="title" required placeholder="e.g. Senior Product Designer"></label>
           <label class="field"><span>Company *</span><input name="company" required placeholder="Company name"></label>
-          <label class="field"><span>Country / location</span><input name="country" placeholder="e.g. Netherlands / Remote"></label>
+          <label class="field"><span>Location</span><input name="location" placeholder="e.g. Berlin, Germany / Remote"></label>
+          <label class="field"><span>Country <small>If known</small></span><input name="country" placeholder="e.g. Germany"></label>
           <label class="field"><span>Application language <small>If known</small></span><input name="language" placeholder="e.g. English"></label>
+          <label class="field"><span>Employment type <small>If known</small></span><input name="employment_type" placeholder="e.g. Full-time"></label>
+          <label class="field"><span>Salary <small>If listed</small></span><input name="salary" placeholder="e.g. EUR 60,000-75,000"></label>
           <label class="field field-wide"><span>Job posting URL</span><input name="url" type="url" placeholder="https://..."></label>
-          <label class="field field-wide"><span>Job description *</span><textarea name="description" rows="6" required placeholder="Paste the job description here. It stays in this browser."></textarea></label>
+          <label class="field field-wide"><span>Job description *</span><textarea name="description" rows="6" required placeholder="Paste the job description here. It stays in your local Fieldwork database."></textarea></label>
         </div>
         <div class="dialog-actions">
           <button class="button button-quiet" type="button" data-close="job-dialog">Cancel</button>
@@ -248,15 +474,53 @@
           <div><p class="eyebrow">A FIRST DRAFT — YOURS TO EDIT</p><h2 id="application-title">Application pack</h2></div>
           <button class="icon-button" type="button" data-close="application-dialog" aria-label="Close">×</button>
         </div>
-        <p class="application-disclaimer">These are editable starting points, not AI-generated or verified claims. Drafts are currently in English; your language preference is saved but not yet used for translation. Check every detail and only use statements that are true for you.</p>
+        <p class="application-disclaimer">Starter templates are in English. Use AI translation only if configured, review all details, and only use claims that are true for you. AI drafts are suggestions, not verified claims. Fieldwork never submits applications.</p>
         <input type="hidden" name="jobId">
+        <input type="hidden" name="applicationId">
+        <label class="field"><span>Application language</span>
+          <select name="language">
+            <option>English</option><option>Dutch</option><option>German</option><option>French</option>
+            <option>Spanish</option><option>Portuguese</option><option>Danish</option><option>Swedish</option>
+            <option>Norwegian</option><option>Finnish</option><option>Polish</option><option>Italian</option>
+            <option>Hindi</option><option>Japanese</option><option>Korean</option><option>Arabic</option>
+          </select>
+        </label>
+        <label class="field"><span>Interview date and time <small>Optional · saved as local time</small></span><input name="interview_at" type="datetime-local"></label>
         <label class="field"><span>CV / profile summary</span><textarea name="cv" rows="5"></textarea></label>
-        <label class="field"><span>Cover letter</span><textarea name="coverLetter" rows="8"></textarea></label>
-        <label class="field"><span>Draft answer: “Why are you interested in this role?”</span><textarea name="answer" rows="5"></textarea></label>
+        <label class="field"><span>Cover letter</span><textarea name="cover_letter" rows="8"></textarea></label>
+        <label class="field"><span>Application question answers <small>Edit as a JSON array of question/answer objects</small></span><textarea name="answers" rows="5" spellcheck="false"></textarea></label>
+        <label class="field"><span>Reviewer notes <small>AI-assisted review, if configured</small></span><textarea name="review" rows="4"></textarea></label>
+        <div id="ats-result" aria-live="polite"></div>
+        <div id="company-research-result" class="company-research-result"></div>
         <div class="dialog-actions">
           <button class="button button-quiet" type="button" data-close="application-dialog">Close</button>
-          <button class="button button-outline" type="button" id="copy-application">Copy all drafts</button>
-          <button class="button button-dark" type="submit">Save application pack <span aria-hidden="true">↗</span></button>
+          <button class="button button-outline" type="button" data-action="ats-check">Local ATS keyword check</button>
+          <button class="button button-outline" type="button" data-ai-task="application">Draft with AI</button>
+          <button class="button button-outline" type="button" data-ai-task="review">Review with AI</button>
+          <button class="button button-outline" type="button" data-ai-task="interview">Prepare interview with AI</button>
+          <button class="button button-outline" type="button" data-ai-task="translate">Translate with AI</button>
+          <button class="button button-outline" type="button" data-ai-task="followup">Draft follow-up with AI</button>
+          <button class="button button-outline" type="button" data-action="company-research">Company research</button>
+          <button class="button button-outline" type="button" id="print-application">Print / save PDF</button>
+          <button class="button button-outline" type="button" id="copy-application">Copy all</button>
+          <button class="button button-dark" type="submit">Save drafts <span aria-hidden="true">↗</span></button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="outcome-dialog" class="dialog">
+      <form id="outcome-form" method="dialog">
+        <div class="dialog-heading">
+          <div><p class="eyebrow">KEEP A RECORD</p><h2>Record an outcome</h2></div>
+          <button class="icon-button" type="button" data-close="outcome-dialog" aria-label="Close">×</button>
+        </div>
+        <input type="hidden" name="applicationId">
+        <label class="field"><span>Stage / outcome</span>
+          <select name="outcome"><option>Screening</option><option>Interviewing</option><option>Offer</option><option>Hired</option><option>Rejected</option><option>Withdrawn</option><option>Expired</option></select>
+        </label>
+        <label class="field"><span>Notes <small>Round, date, feedback, or next step</small></span><textarea name="note" rows="4"></textarea></label>
+        <div class="dialog-actions">
+          <button class="button button-quiet" type="button" data-close="outcome-dialog">Cancel</button>
+          <button class="button button-dark" type="submit">Save outcome</button>
         </div>
       </form>
     </dialog>
