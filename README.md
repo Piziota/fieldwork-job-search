@@ -16,6 +16,7 @@ Alternatively, open `index.html` directly in a browser. Data is kept in that bro
 
 ## Current scope
 
+- View saved roles, submitted applications, interviews, match counts, and a live application pipeline on the dashboard.
 - Save job-search preferences, target countries, and application language.
 - Add job postings manually and view an explainable match score.
 - Create editable CV, cover-letter, and application-answer drafts from information you provide.

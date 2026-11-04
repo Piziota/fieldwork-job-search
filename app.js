@@ -148,16 +148,59 @@ function scoreJob(job) {
   return { score: Math.max(0, Math.min(100, score)), reasons };
 }
 
+function renderDashboard() {
+  const counts = {
+    Saved: state.jobs.filter((job) => job.status === "Saved").length,
+    Applied: state.jobs.filter((job) => job.status === "Applied").length,
+    Interviewing: state.jobs.filter((job) => job.status === "Interviewing").length,
+  };
+  const strongMatches = state.jobs.filter((job) => scoreJob(job).score >= 70).length;
+  const submitted = counts.Applied + counts.Interviewing;
+
+  document.querySelector("#stat-total").textContent = String(counts.Saved);
+  document.querySelector("#stat-applied").textContent = String(submitted);
+  document.querySelector("#stat-interviews").textContent = String(counts.Interviewing);
+  document.querySelector("#stat-matches").textContent = String(strongMatches);
+
+  for (const [status, suffix] of [["Saved", "saved"], ["Applied", "applied"], ["Interviewing", "interview"]]) {
+    document.querySelector(`#pipeline-${suffix}-count`).textContent = String(counts[status]);
+    const largestGroup = Math.max(...Object.values(counts));
+    document.querySelector(`#pipeline-${suffix}-bar`).style.width =
+      largestGroup === 0 ? "0%" : `${Math.max(8, (counts[status] / largestGroup) * 100)}%`;
+  }
+
+  const profile = state.profile;
+  const hasProfile = Boolean(profile.role || profile.countries?.length || profile.mustHave || profile.evidence);
+  const profileIntro = document.querySelector("#profile-summary-intro");
+  const profileContent = document.querySelector("#profile-summary-content");
+  const profileLink = document.querySelector("#profile-summary-link");
+  const sidebarStatus = document.querySelector("#sidebar-search-status");
+  sidebarStatus.textContent = hasProfile ? "Search profile ready" : "Profile not set up";
+  sidebarStatus.previousElementSibling.classList.toggle("profile-ready", hasProfile);
+  profileLink.textContent = hasProfile ? "Edit your profile →" : "Set up your profile →";
+
+  if (!hasProfile) {
+    profileIntro.textContent = "Set your preferences to make job matches more relevant.";
+    profileContent.innerHTML = '<div class="profile-summary-empty"><span aria-hidden="true">◎</span><span>Add your target role, countries, and must-haves.</span></div>';
+    return;
+  }
+
+  const countries = Array.isArray(profile.countries) ? profile.countries : [];
+  profileIntro.textContent = profile.role ? `Looking for ${profile.role}` : "Your search preferences";
+  const tags = [
+    profile.language && `Writing in ${profile.language}`,
+    ...countries.slice(0, 3),
+    countries.length > 3 && `+${countries.length - 3} more`,
+  ].filter(Boolean);
+  profileContent.innerHTML = tags.map((tag) => `<span class="profile-chip">${escapeHtml(tag)}</span>`).join("");
+}
+
 function renderJobs() {
   const filter = statusFilter.value;
   const jobs = [...state.jobs]
     .filter((job) => filter === "all" || job.status === filter)
     .sort((a, b) => scoreJob(b).score - scoreJob(a).score || b.createdAt - a.createdAt);
-  const strongMatches = state.jobs.filter((job) => scoreJob(job).score >= 70).length;
-  const activeApplications = state.jobs.filter((job) => ["Applied", "Interviewing"].includes(job.status)).length;
-  document.querySelector("#stat-total").textContent = String(state.jobs.length);
-  document.querySelector("#stat-matches").textContent = String(strongMatches);
-  document.querySelector("#stat-applied").textContent = String(activeApplications);
+  renderDashboard();
 
   if (!jobs.length) {
     jobsList.innerHTML = `
@@ -296,6 +339,19 @@ applicationForm.addEventListener("submit", handleApplicationSubmit);
 statusFilter.addEventListener("change", renderJobs);
 
 document.querySelector("#add-job-button").addEventListener("click", () => jobDialog.showModal());
+document.querySelector("#current-date").textContent = new Date().toLocaleDateString(undefined, {
+  weekday: "long",
+  month: "long",
+  day: "numeric",
+}).toUpperCase();
+
+document.querySelectorAll(".side-link").forEach((link) => {
+  link.addEventListener("click", () => {
+    document.querySelectorAll(".side-link").forEach((item) => item.classList.remove("active"));
+    link.classList.add("active");
+  });
+});
+
 document.querySelector("#copy-application").addEventListener("click", async () => {
   const data = new FormData(applicationForm);
   const text = `CV / PROFILE SUMMARY\n${data.get("cv")}\n\nCOVER LETTER\n${data.get("coverLetter")}\n\nAPPLICATION ANSWER\n${data.get("answer")}`;
